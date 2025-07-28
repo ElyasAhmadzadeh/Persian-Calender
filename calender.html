@@ -9,31 +9,41 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap"
         rel="stylesheet">
+    <link rel="stylesheet" href="/font-awesome-4.7.0/css/font-awesome.css">
+
 
     <link rel="stylesheet" href="calender.css">
 </head>
 
 <body>
 
+    <header class="main_head">
+        <h1>تقویم</h1>
+    </header>
+
     <main class="main_container">
 
         <!-- for showing the days table and select a date -->
         <section class="calender">
             <!-- selecting year and month of a date in header -->
-            <header class="month_year_selection">
+            <section class="month_year_selection">
                 <div class="year_selection">
-                    <button class="prevoius"></button>
-                    <div class="years"></div>
-                    <button class="next"></button>
+                    <button class="prevoius_year"><i class="fa fa-angle-left" aria-hidden="true"></i></button>
+                    <div class="years">
+                        <div class="year">1404</div>
+                    </div>
+                    <button class="next_year"><i class="fa fa-angle-right" aria-hidden="true"></i></button>
                 </div>
                 <div class="month_selection">
-                    <button class="prevoius"></button>
-                    <div class="months"></div>
-                    <button class="next"></button>
+                    <button class="prevoius_month"><i class="fa fa-angle-left" aria-hidden="true"></i></button>
+                    <div class="months">
+                        <div class="month"></div>
+                    </div>
+                    <button class="next_month"><i class="fa fa-angle-right" aria-hidden="true"></i></button>
                 </div>
-            </header>
+            </section>
             <!-- days in a selected month -->
-            <table class="days_in_month">
+            <table class="days_in_month_table">
                 <tr class="week">
                     <th class="week_days">شنبه</th>
                     <th class="week_days">یکشنبه</th>
