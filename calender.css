@@ -21,7 +21,7 @@ body {
 
 .main_container {
     width: 1300px;
-    height: 700px;
+    height: 900px;
     border: 1px solid white;
     border-radius: 10px;
     margin: 30px auto;
@@ -36,6 +36,14 @@ body {
     margin: 15px 10px;
     background-color: white;
     border-radius: 10px;
+}
+
+.calender {
+    height: 520px;
+}
+
+.selected-day {
+    margin: 20px 10px 20px 10px;
 }
 
 .month_year_selection {
@@ -60,7 +68,8 @@ body {
     justify-content: space-between;
 }
 
-.prevoius_month , .prevoius_year {
+.prevoius_month,
+.prevoius_year {
     font-size: 25px;
     color: red;
     width: 40px;
@@ -70,14 +79,18 @@ body {
     transition: background-color 300ms;
 }
 
-.prevoius_month:hover , .prevoius_year:hover {
+.prevoius_month:hover,
+.prevoius_year:hover {
     background-color: rgba(255, 0, 0, 0.5);
 }
-.prevoius_month:active , .prevoius_year:active{
-        background-color: rgba(255, 0, 0, 0.7);
+
+.prevoius_month:active,
+.prevoius_year:active {
+    background-color: rgba(255, 0, 0, 0.7);
 }
 
-.next_month , .next_year  {
+.next_month,
+.next_year {
     font-size: 25px;
     color: green;
     width: 40px;
@@ -86,15 +99,20 @@ body {
     background-color: rgba(0, 255, 0, 0.342);
     transition: background-color 300ms;
 }
-.next_month:hover , .next_year:hover {
-        background-color: rgba(0, 255, 0, 0.5);
-}
-.next_month:active , .next_year:active {
-        background-color: rgba(0, 255, 0, 0.7);
+
+.next_month:hover,
+.next_year:hover {
+    background-color: rgba(0, 255, 0, 0.5);
 }
 
-.months , .years{
-    width:420px ;
+.next_month:active,
+.next_year:active {
+    background-color: rgba(0, 255, 0, 0.7);
+}
+
+.months,
+.years {
+    width: 420px;
     height: 100%;
     display: flex;
     justify-content: center;
@@ -104,7 +122,9 @@ body {
     text-wrap: nowrap;
     transition: all 300ms;
 }
-.month , .year{
+
+.month,
+.year {
     width: 50px;
     display: flex;
     justify-content: center;
@@ -112,11 +132,116 @@ body {
 
 
 
-.days_in_month_table{
-    width: 1230px;
-    height: 210px;
+.days_in_month_table {
+    width: 900px;
+    height: 360px;
     background-color: rgba(137, 43, 226, 0.371);
     margin: 5px auto;
     border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+
 }
-/* next session complete the table*/
+
+.week_days {
+    height: 35px;
+    width: 800px;
+    margin: 20px auto 5px auto;
+    display: flex;
+    justify-content: center;
+
+
+}
+
+.week_day {
+    width: 85px;
+    height: 100%;
+    background-color: rgba(29, 29, 255, 0.345);
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 15px;
+}
+
+
+.week {
+    width: 800px;
+    height: 47px;
+    margin: 5px auto;
+    display: flex;
+    justify-content: center;
+
+}
+
+.day {
+    width: 75px;
+    height: 47px;
+    margin: 0 25px;
+    background-color: rgba(255, 255, 255, 0.808);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    transition: background-color 200ms;
+}
+
+.day:hover {
+    background-color: rgba(0, 0, 0, 0.118);
+}
+
+.day:active {
+    background-color: rgba(0, 0, 0, 0.338);
+}
+
+.day_number,
+.works_count {
+    width: 100%;
+    height: 22px;
+    font-size: 17px;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+}
+
+
+
+.work_user_input {
+    height: 100%;
+    width: 600px;
+    background-color: black;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.user_input_textarea {
+    width: 400px;
+    height: 200px;
+    margin: 10px 85px;
+    background-color: rgba(41, 41, 41, 1);
+    border: none;
+    outline: none;
+    resize: none;
+    border-radius: 10px;
+    color: white;
+    padding: 10px;
+}
+.user_input_textarea:focus{
+    border: 1px solid rgba(255, 255, 255, 0.4);
+}
+.submit_work_btn {
+    margin:10px auto 50px auto;
+    font-size: 17px;
+    padding:7px;
+    border-radius: 10px;
+}
+
+
+.textarea_guide{
+    color: rgba(255, 255, 255, 0.318);
+    position: relative;
+    bottom: 170px;
+    right: 15px;
+}
