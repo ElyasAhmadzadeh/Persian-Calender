@@ -7,6 +7,9 @@ const next_year_btn = document.querySelector(".next_year");
 const previouse_year_btn = document.querySelector(".prevoius_year");
 const textarea = document.querySelector(".user_input_textarea");
 const characterCounter = document.querySelector(".character_count");
+const day = document.querySelectorAll(".day_number");
+
+
 
 const month_box = document.querySelector(".months");
 const selected_month = document.querySelector(".month");
@@ -32,6 +35,7 @@ function nextMonth() {//for changing the current month to next month
         months_counter = 0;
         selected_month.textContent = months[months_counter];
     }
+    calenderUpdate();
 }
 function perviouseMonth() {//changing month to perviouse month
     if (months_counter > 0 && months_counter <= 11) {
@@ -48,6 +52,7 @@ function perviouseMonth() {//changing month to perviouse month
         months_counter = 11;
         selected_month.textContent = months[months_counter];
     }
+    calenderUpdate();
 }
 function nextYear() {//change year to next year
     let this_year = +selected_year.textContent
@@ -58,7 +63,7 @@ function nextYear() {//change year to next year
     else {
         throw 404;
     }
-
+    calenderUpdate();
 }
 function previouseYear() {//change year to pervoiuse year
     let this_year = +selected_year.textContent
@@ -69,6 +74,7 @@ function previouseYear() {//change year to pervoiuse year
     else {
         throw 404;
     }
+    calenderUpdate();
 }
 
 function textAreaClean() {
@@ -99,6 +105,45 @@ const textAreaHandler = () => {
 
 
 }
+
+function calenderUpdate() {
+    fetch("http://localhost:3000/api/calendar")
+        .then(res => {
+            return res.json()
+        })
+        .then(
+            data => {
+                const month = document.querySelector(".month").textContent;
+                const year = document.querySelector(".year").textContent;
+                const yearNumber = +year;
+                let monthNumber;
+                for (let i = 0; i < months.length; i++) {
+                    if (months[i] == month) {
+                        monthNumber = i;
+                    }
+                }
+                const daysInMonth = data[yearNumber - 1400][monthNumber];
+                console.log(daysInMonth);
+                day.forEach(
+                    element => {
+                       daysInMonth.forEach(
+                        selectedDay =>{
+                            if(element.classList.contains(selectedDay.weekday))
+                            {
+                                element.textContent = selectedDay.day;
+                            }
+                        }
+                       )
+                    }
+                )
+                for (let i = 0; i < daysInMonth.length; i++) {
+                    day[i].textContent = daysInMonth[i].day;
+                }
+
+            }
+        );
+}
+
 
 
 

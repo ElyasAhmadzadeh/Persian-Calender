@@ -1,38 +1,36 @@
-const express = require('express');
-const bodyParser = require('body-parser');
+const express = require("express");
+const cors = require("cors");
+const { calendar } = require("./data");
+
 const app = express();
 const port = 3000;
-app.use(bodyParser.json());
-app.use(require('cors')());
 
-// دیتای اصلی
-let calendarData = [...]; // اینجا همون دیتایی که بالا ساختی میاد
+app.use(cors());
+app.use(express.json());
 
-// گرفتن تسک‌های یک روز خاص
-app.get('/tasks/:year/:month/:day', (req, res) => {
-  const { year, month, day } = req.params;
-  const yearData = calendarData.find(y => y.year == year);
-  const monthData = yearData?.months.find(m => m.month == month);
-  const dayData = monthData?.days.find(d => d.day == day);
-
-  if (dayData) res.json(dayData.tasks);
-  else res.status(404).json({ error: "Date not found" });
+// گرفتن کل دیتا
+app.get("/api/calendar", (req, res) => {
+  res.json(calendar);
 });
 
-// افزودن یک تسک به یک روز خاص
-app.post('/tasks/:year/:month/:day', (req, res) => {
+// ثبت تسک روی تاریخ مشخص
+app.post("/api/calendar/:year/:month/:day", (req, res) => {
   const { year, month, day } = req.params;
   const { task } = req.body;
 
-  const yearData = calendarData.find(y => y.year == year);
-  const monthData = yearData?.months.find(m => m.month == month);
-  const dayData = monthData?.days.find(d => d.day == day);
+  const yearIndex = year - 1400;
+  const monthIndex = month - 1;
+  const dayIndex = day - 1;
 
-  if (dayData) {
-    dayData.tasks.push(task);
-    res.json({ success: true, tasks: dayData.tasks });
+  if (
+    calendar[yearIndex] &&
+    calendar[yearIndex][monthIndex] &&
+    calendar[yearIndex][monthIndex][dayIndex]
+  ) {
+    calendar[yearIndex][monthIndex][dayIndex].tasks.push(task);
+    res.status(200).json({ message: "Task added successfully" });
   } else {
-    res.status(404).json({ error: "Date not found" });
+    res.status(404).json({ error: "Invalid date" });
   }
 });
 
