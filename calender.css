@@ -219,20 +219,22 @@ body {
 .user_input_textarea {
     width: 400px;
     height: 200px;
-    margin: 10px 85px;
+    margin: 30px 85px 0 85px;
     background-color: rgba(41, 41, 41, 1);
-    border: none;
-    outline: none;
+    border: 1px solid rgba(255, 255, 255, 0);
+    outline: 1px solid rgba(255, 255, 255, 0);
     resize: none;
     border-radius: 10px;
     color: white;
     padding: 10px;
+    font-size: 20px;
+    transition: border 300ms;
 }
 .user_input_textarea:focus{
     border: 1px solid rgba(255, 255, 255, 0.4);
 }
 .submit_work_btn {
-    margin:10px auto 50px auto;
+    margin:0 auto 50px auto;
     font-size: 17px;
     padding:7px;
     border-radius: 10px;
@@ -242,6 +244,14 @@ body {
 .textarea_guide{
     color: rgba(255, 255, 255, 0.318);
     position: relative;
-    bottom: 170px;
+    bottom: 160px;
     right: 15px;
+    transition: opacity 200ms;
+}
+
+.character_count{
+    color: rgba(255, 255, 255, 0.701);
+    position: relative;
+    bottom: 45px;
+
 }
