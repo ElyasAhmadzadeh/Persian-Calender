@@ -1,3 +1,4 @@
+// const { log } = require("console");
 
 
 //global variables
@@ -8,7 +9,7 @@ const previouse_year_btn = document.querySelector(".prevoius_year");
 const textarea = document.querySelector(".user_input_textarea");
 const characterCounter = document.querySelector(".character_count");
 const day = document.querySelectorAll(".day_number");
-
+const form = document.querySelector(".work_user_input");
 
 
 const month_box = document.querySelector(".months");
@@ -19,6 +20,11 @@ const selected_year = document.querySelector(".year");
 const months = ["فروردین", "اردیبهشت", "خرداد", "تیر", "مرداد", "شهریور", "مهر", "آبان", "آذر", "دی", "بهمن", "اسفند"];
 let months_counter = 0;
 selected_month.textContent = months[0];
+
+
+
+calenderUpdate();
+
 
 function nextMonth() {//for changing the current month to next month
     if (months_counter >= 0 && months_counter < 11) {
@@ -106,6 +112,9 @@ const textAreaHandler = () => {
 
 }
 
+console.log(day);
+
+
 function calenderUpdate() {
     fetch("http://localhost:3000/api/calendar")
         .then(res => {
@@ -124,24 +133,53 @@ function calenderUpdate() {
                 }
                 const daysInMonth = data[yearNumber - 1400][monthNumber];
                 console.log(daysInMonth);
-                day.forEach(
-                    element => {
-                       daysInMonth.forEach(
-                        selectedDay =>{
-                            if(element.classList.contains(selectedDay.weekday))
-                            {
-                                element.textContent = selectedDay.day;
-                            }
-                        }
-                       )
-                    }
-                )
+                // day.forEach(
+                //     element =>{
+                //         daysInMonth.forEach(
+                //             selected_day =>{
+                //                 if(element.classList.contains(selected_day.weekday))
+                //                 {
+                //                     element.textContent = selected_day.day;
+
+                //                 }
+                //                 return;
+                //             }
+                            
+                //         )
+                //     }
+                // )
+
+                for(let i = 0 ; i < day.length ; i++)
+                {
+                    day[i].textContent = "";
+                }
+
+
+
+                let newj = 0;
                 for (let i = 0; i < daysInMonth.length; i++) {
-                    day[i].textContent = daysInMonth[i].day;
+                    for(let j = newj ; j < day.length ; j++)
+                    {
+                        if(day[j].classList.contains(daysInMonth[i].weekday) && day[j].textContent == "")
+                        {
+                            day[j].textContent = daysInMonth[i].day;
+                            newj = j;
+                            break;
+                        }
+                    }
                 }
 
             }
         );
+}
+
+function postToServer()
+{
+    const task = textarea.value;
+    fetch("http://localhost:3000/api/calendar" , {
+        method : "PUT"
+    })
+    .then()
 }
 
 
@@ -149,6 +187,7 @@ function calenderUpdate() {
 
 
 //events
+form.addEventListener("submit" , postToServer)
 previouse_month_btn.addEventListener("click", perviouseMonth);
 next_month_btn.addEventListener("click", nextMonth);
 next_year_btn.addEventListener("click", nextYear);
