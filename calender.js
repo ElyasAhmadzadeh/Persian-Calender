@@ -3,6 +3,8 @@
 
 
 
+
+
 //global variables
 const next_month_btn = document.querySelector(".next_month");
 const previouse_month_btn = document.querySelector(".prevoius_month");
@@ -15,6 +17,9 @@ const form = document.querySelector(".work_user_input");
 const day_sells = document.querySelectorAll(".day");
 let selectedDay = null;
 const dayContainer = document.querySelector(".selected-day");
+const list = document.querySelector(".works_list");
+const getURL = `http://localhost:3000/api/calendar/`;
+
 
 
 const month_box = document.querySelector(".months");
@@ -132,7 +137,7 @@ function monthToNumber(month) {
 
 
 function calenderUpdate() {
-    fetch("http://localhost:3000/api/calendar")
+    fetch(getURL)
         .then(res => {
             return res.json()
         })
@@ -169,12 +174,6 @@ function calenderUpdate() {
         );
 }
 
-function dayFinder() {
-    console.log("finder");
-    console.log(selectedDay);
-
-
-}
 
 
 function postToServer() {
@@ -197,15 +196,89 @@ function postToServer() {
         .then(res => {
             if (res.ok) {
                 console.log("success");
+                makeList();
             }
         })
         .catch(err => {
-            console.log(err)
+            console.log(err);
         });
 
 
 }
+
+function makeList() {
+
+
+
+
+    const month = document.querySelector(".month").textContent;
+    const monthNumber = monthToNumber(month);
+    const year = +document.querySelector(".year").textContent;
+    let tasks = [];
+    let tasks_txt = [];
+    fetch(getURL)
+        .then(res => {
+            if (!res.ok) {
+                errorWorks();
+                return;
+            }
+
+            if (list.textContent == "خطای سرور") {
+                list.textContent = "";
+                list.style.color = "black";
+            }
+            return res.json()
+        })
+        .then(
+            data => {
+                tasks = data[year - 1400][monthNumber][selectedDay - 1].tasks;
+                tasks.forEach(
+                    task => {
+                        tasks_txt.push(task.text);
+                    }
+                )
+
+                tasks_txt.forEach(
+                    text => {
+                        console.log("text found");
+
+                        const workElement = `<li class="work">
+                    <div class="work_txt">
+                        <p>
+                        ${text}
+                        </p>
+                    </div>
+                    <div class="buttons">
+                        <button class="done"><i class="fa fa-check" aria-hidden="true"></i></button>
+                        <button class="delete"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                    </div>
+                </li>`;
+
+                        list.insertAdjacentHTML("afterbegin", workElement);
+                    }
+                )
+
+            }
+
+        )
+        .catch(
+            err => {
+                console.log(err);
+            }
+        );
+    console.log(tasks_txt);
+
+
+
+
+
+
+
+}
+
 function sellSelected(event) {
+
+
     day_sells.forEach(
         element => {
             element.classList.remove("selected_day_animation");
@@ -216,10 +289,16 @@ function sellSelected(event) {
 
 
     selected.closest(".day").classList.add("selected_day_animation");
-
     dayContainer.classList.add("selected-day-loading");
+    makeList();
+
+
 }
 
+function errorWorks() {
+    list.textContent = "خطای سرور";
+    list.style.color = "red";
+}
 
 
 
@@ -229,7 +308,8 @@ day_sells.forEach(
         element.addEventListener("click", sellSelected)
     }
 )
-form.addEventListener("submit", postToServer)
+form.addEventListener("submit", postToServer);
+form.addEventListener("submit", makeList);
 previouse_month_btn.addEventListener("click", perviouseMonth);
 next_month_btn.addEventListener("click", nextMonth);
 next_year_btn.addEventListener("click", nextYear);
