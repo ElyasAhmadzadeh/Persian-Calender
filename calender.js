@@ -176,7 +176,8 @@ function calenderUpdate() {
 
 
 
-function postToServer() {
+function postToServer(event) {
+    event.preventDefault();
     const task = textarea.value;
     const month = document.querySelector(".month").textContent;
     const monthNumber = monthToNumber(month);
@@ -196,19 +197,26 @@ function postToServer() {
         .then(res => {
             if (res.ok) {
                 console.log("success");
+                textarea.value = "";
                 makeList();
+            }
+            else {
+                return;
             }
         })
         .catch(err => {
             console.log(err);
         });
-
-
+    characterCounter.textContent = 150;
 }
 
 function makeList() {
-
-
+    const last_list_itmes = document.querySelectorAll(".work");
+    last_list_itmes.forEach(
+        element => {
+            element.remove();
+        }
+    )
 
 
     const month = document.querySelector(".month").textContent;
@@ -237,12 +245,13 @@ function makeList() {
                         tasks_txt.push(task.text);
                     }
                 )
-
+                let task_counter = 0;
                 tasks_txt.forEach(
                     text => {
                         console.log("text found");
-
+                        task_counter++;
                         const workElement = `<li class="work">
+                        <div class = "task_number">task ${task_counter}</div>
                     <div class="work_txt">
                         <p>
                         ${text}
@@ -271,10 +280,12 @@ function makeList() {
 
 
 
-
-
-
 }
+
+
+
+
+
 
 function sellSelected(event) {
 
@@ -293,13 +304,20 @@ function sellSelected(event) {
     makeList();
 
 
+
 }
 
 function errorWorks() {
     list.textContent = "خطای سرور";
     list.style.color = "red";
 }
+function keypressFormHandler(event) {
+    console.log(event.key);
+    
+    if (event.key === "Enter")
+        postToServer(event);
 
+}
 
 
 //events
@@ -308,8 +326,9 @@ day_sells.forEach(
         element.addEventListener("click", sellSelected)
     }
 )
+form.addEventListener("keydown", keypressFormHandler);
 form.addEventListener("submit", postToServer);
-form.addEventListener("submit", makeList);
+// form.addEventListener("submit", makeList);
 previouse_month_btn.addEventListener("click", perviouseMonth);
 next_month_btn.addEventListener("click", nextMonth);
 next_year_btn.addEventListener("click", nextYear);

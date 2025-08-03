@@ -63,6 +63,34 @@ app.post("/api/tasks/:year/:month/:day", (req, res) => {
     return res.status(400).json({ error: "Invalid date" });
   }
 
+
+  app.delete("/api/tasks/:year/:month/:day/:taskIndex", (req, res) => {
+  const { year, month, day, taskIndex } = req.params;
+
+  const yearIndex = year - 1400;
+  const monthIndex = month - 1;
+  const dayIndex = day - 1;
+
+  const dayObj = calendar[yearIndex]?.[monthIndex]?.[dayIndex];
+  if (!dayObj) {
+    return res.status(400).json({ error: "Invalid date" });
+  }
+
+  const index = parseInt(taskIndex, 10);
+  if (isNaN(index) || index < 0 || index >= dayObj.tasks.length) {
+    return res.status(400).json({ error: "Invalid task index" });
+  }
+
+  // حذف تسک
+  dayObj.tasks.splice(index, 1);
+
+  res.status(200).json({
+    message: "Task deleted successfully",
+    day: dayObj
+  });
+});
+
+
   // اطمینان حاصل می‌کنیم که task یک رشته هست
   if (typeof task !== "string" || !task.trim()) {
     return res.status(400).json({ error: "Task must be a non-empty string" });
