@@ -47,8 +47,10 @@ body {
     opacity: 0;
     transform: translateY(50px);
     transition: all 1s;
+    display: flex;
 }
-.selected-day-loading{
+
+.selected-day-loading {
     opacity: 1;
     transform: translateY(0);
 }
@@ -182,8 +184,8 @@ body {
 }
 
 .day {
-    width: 75px;
-    height: 47px;
+    width: 90px;
+    height: 50px;
     margin: 0 25px;
     background-color: rgba(255, 255, 255, 0.808);
     border-radius: 10px;
@@ -212,7 +214,8 @@ body {
     font-size: 17px;
     margin: auto;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
+    padding: 5px;
 }
 
 .works_count {
@@ -277,4 +280,86 @@ body {
     position: relative;
     bottom: 45px;
 
+}
+
+.works_list {
+    width: 640px;
+    margin: 5px 15px;
+    direction: rtl;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    overflow-y: scroll;
+}
+
+.work {
+    /* direction: ltr; */
+    width: 235px;
+    height: 240px;
+    margin: 10px auto;
+    border: 2px solid purple;
+    border-radius: 10px;
+    background-color: rgba(198, 43, 226, 0.332);
+    color: purple;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.622);
+    transition: transform 500ms;
+}
+.work:hover{
+    transform: scale(1.07 , 1.07);
+}
+.work_txt {
+    width: 200px;
+    height: 200px;
+    margin: 0 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-x: hidden;
+
+}
+
+.work_txt p {
+    word-break: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+}
+
+.buttons {
+    width: 100%;
+    height: 40px;
+    border-radius: 10px;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.done {
+    width: 30px;
+    height: 30px;
+    margin: 0 10px;
+    background-color: rgba(0, 255, 0, 0.342);
+    border: 1px solid green;
+    transition: background-color 300ms;
+
+}
+
+.done:hover {
+    background-color: rgba(0, 255, 0, 0.5);
+}
+
+.delete {
+    width: 30px;
+    height: 30px;
+    margin: 0 10px;
+    background-color: rgba(255, 0, 0, 0.342);
+    border: 1px solid red;
+    transition: background-color 300ms;
+
+}
+
+.delete:hover {
+    background-color: rgba(255, 0, 0, 0.5);
 }
