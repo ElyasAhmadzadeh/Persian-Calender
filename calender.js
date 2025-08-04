@@ -1,4 +1,6 @@
-// const { log } = require("console");
+// // const { log } = require("console");
+
+// const { DatabaseSync } = require("node:sqlite");
 
 
 
@@ -19,7 +21,8 @@ let selectedDay = null;
 const dayContainer = document.querySelector(".selected-day");
 const list = document.querySelector(".works_list");
 const getURL = `http://localhost:3000/api/calendar/`;
-
+const delete_btn = document.querySelectorAll(".delete");
+const worksInDay = document.querySelectorAll(".works_count");
 
 
 const month_box = document.querySelector(".months");
@@ -109,7 +112,7 @@ function textAreaReset() {
 const textAreaHandler = () => {
     let txtCharacters = 150;
     const typedCharacters = textarea.value.length;
-    const overallCharacters = +txtCharacters - typedCharacters;
+    const overallCharacters = txtCharacters - typedCharacters;
     characterCounter.textContent = overallCharacters;
 
     if (overallCharacters <= 50 && overallCharacters > 10) {
@@ -164,6 +167,8 @@ function calenderUpdate() {
                     for (let j = newj; j < day.length; j++) {
                         if (day[j].classList.contains(daysInMonth[i].dayName) && day[j].textContent == "") {
                             day[j].textContent = daysInMonth[i].day;
+                            if (day[j].textContent != "")
+                                worksInDay[j].textContent = daysInMonth[i].tasks.length
                             newj = j;
                             break;
                         }
@@ -196,11 +201,13 @@ function postToServer(event) {
     })
         .then(res => {
             if (res.ok) {
-                console.log("success");
+                console.log("put method success");
                 textarea.value = "";
                 makeList();
             }
             else {
+                console.log("put method failed");
+
                 return;
             }
         })
@@ -239,31 +246,50 @@ function makeList() {
         })
         .then(
             data => {
-                tasks = data[year - 1400][monthNumber][selectedDay - 1].tasks;
-                tasks.forEach(
-                    task => {
-                        tasks_txt.push(task.text);
-                    }
-                )
-                let task_counter = 0;
-                tasks_txt.forEach(
-                    text => {
-                        console.log("text found");
-                        task_counter++;
-                        const workElement = `<li class="work">
-                        <div class = "task_number">task ${task_counter}</div>
-                    <div class="work_txt">
-                        <p>
-                        ${text}
-                        </p>
-                    </div>
-                    <div class="buttons">
-                        <button class="done"><i class="fa fa-check" aria-hidden="true"></i></button>
-                        <button class="delete"><i class="fa fa-trash" aria-hidden="true"></i></button>
-                    </div>
-                </li>`;
+                console.log(data);
 
-                        list.insertAdjacentHTML("afterbegin", workElement);
+                tasks = data[year - 1400][monthNumber][selectedDay - 1].tasks;
+                let task_counter = 0;
+                tasks.forEach(
+                    todayTask => {
+                        task_counter++;
+                        let workElement;
+                        if (todayTask.done == true) {
+
+                            workElement = `<li class="work">
+    <div class = "task_number">task  <span class = "task_counter">${task_counter}</span></div>
+    <div class = "task_status_done">task done</div>
+<div class="work_txt done_work">
+    <p>
+    ${todayTask.text}
+    </p>
+</div>
+<div class="buttons">
+    <button class="done"><i class="fa fa-check" aria-hidden="true"></i></button>
+    <button class="delete"><i class="fa fa-trash" aria-hidden="true"></i></button>
+</div>
+</li>`;
+                        }
+                        if (todayTask.done == false) {
+                            workElement = `<li class="work">
+    <div class = "task_number">task  <span class = "task_counter">${task_counter}</span></div>
+    <div class = "task_status_not_done">task isn't done</div>
+<div class="work_txt">
+    <p>
+    ${todayTask.text}
+    </p>
+</div>
+<div class="buttons">
+    <button class="done"><i class="fa fa-check" aria-hidden="true"></i></button>
+    <button class="delete"><i class="fa fa-trash" aria-hidden="true"></i></button>
+</div>
+</li>`;
+                        }
+
+
+                        if (workElement != null)
+                            list.insertAdjacentHTML("afterbegin", workElement);
+
                     }
                 )
 
@@ -281,9 +307,6 @@ function makeList() {
 
 
 }
-
-
-
 
 
 
@@ -307,13 +330,95 @@ function sellSelected(event) {
 
 }
 
+function deleteThisTask(event) {
+    const clickedEl = event.target;
+    const month = document.querySelector(".month").textContent;
+    const monthNumber = monthToNumber(month);
+    const year = +document.querySelector(".year").textContent;
+
+
+    if (clickedEl.classList.contains("delete") || clickedEl.classList.contains("fa-trash")) {
+        const work_card = clickedEl.closest(".work");
+        const task_number = +work_card.querySelector(".task_counter").textContent;
+
+        fetch(`http://localhost:3000/api/tasks/${year}/${monthNumber}/${selectedDay}/${task_number - 1}`,
+            {
+                method: "DELETE"
+            }
+        )
+            .then(
+                res => {
+                    if (res.ok) {
+                        console.log("item deleted successfully");
+                        makeList();
+                    }
+                    else {
+                        console.log("can't delete item");
+
+                    }
+                }
+            )
+            .catch()
+        {
+            err => {
+                console.log("Error : " + err);
+            }
+        }
+
+    }
+
+}
+function workDoneCheck(event) {
+    const clickedEl = event.target;
+    const month = document.querySelector(".month").textContent;
+    const monthNumber = monthToNumber(month);
+    const year = +document.querySelector(".year").textContent;
+
+
+    if (clickedEl.classList.contains("done") || clickedEl.classList.contains("fa-check")) {
+        const work_card = clickedEl.closest(".work");
+        const work_number = +work_card.querySelector(".task_counter").textContent;
+
+
+        fetch(`http://localhost:3000/api/tasks/${year}/${monthNumber + 1}/${selectedDay}/${work_number - 1}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ done: true })
+        })
+            .then(
+                res => {
+                    if (res.ok) {
+                        console.log("done successfully");
+                        makeList();
+                    }
+                    else {
+                        console.log("done failed");
+
+                    }
+                }
+            )
+            .catch(
+                err => {
+                    console.log("Error : " + err);
+
+                }
+            )
+
+
+    }
+}
+
+
+
 function errorWorks() {
     list.textContent = "خطای سرور";
     list.style.color = "red";
 }
 function keypressFormHandler(event) {
     console.log(event.key);
-    
+
     if (event.key === "Enter")
         postToServer(event);
 
@@ -326,6 +431,8 @@ day_sells.forEach(
         element.addEventListener("click", sellSelected)
     }
 )
+list.addEventListener("click", workDoneCheck);
+list.addEventListener("click", deleteThisTask);
 form.addEventListener("keydown", keypressFormHandler);
 form.addEventListener("submit", postToServer);
 // form.addEventListener("submit", makeList);

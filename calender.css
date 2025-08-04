@@ -3,6 +3,7 @@
     padding: 0;
     box-sizing: border-box;
     font-family: "Rubik", sans-serif;
+    user-select: none;
 }
 
 body {
@@ -204,8 +205,8 @@ body {
 
 .selected_day_animation {
     border: 2px solid black;
+    background-color: rgba(0, 255, 0, 0.353);
 }
-
 
 
 .day_number {
@@ -220,11 +221,12 @@ body {
 
 .works_count {
     width: 100%;
-    height: 15px;
+    height: 20px;
     font-size: 17px;
     margin: auto;
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
+    padding: 0 3px;
 }
 
 
@@ -253,6 +255,12 @@ body {
     padding: 10px;
     font-size: 20px;
     transition: border 300ms;
+    user-select: text;
+
+}
+
+.user_input_textarea::selection {
+    background-color: rgba(255, 255, 255, 0.304);
 }
 
 .user_input_textarea:focus {
@@ -273,6 +281,7 @@ body {
     bottom: 160px;
     right: 15px;
     transition: opacity 200ms;
+
 }
 
 .character_count {
@@ -294,7 +303,7 @@ body {
 
 .work {
     /* direction: ltr; */
-    width: 235px;
+    width: 275px;
     height: 240px;
     margin: 10px auto;
     border: 2px solid purple;
@@ -304,31 +313,69 @@ body {
     display: flex;
     flex-direction: column;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.622);
-    transition: transform 500ms , box-shadow 300ms;
+    transition: transform 500ms, box-shadow 300ms;
 }
-.work:hover{
-    transform: scale(1.07 , 1.07);
-        box-shadow: 0 0 10px rgba(0, 0, 0, 1);
+
+.work:hover {
+    transform: scale(1.07, 1.07);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 1);
 }
+
 .work_txt {
-    width: 220px;
+    width: 255px;
     height: 200px;
     margin: 10px auto;
     border-radius: 5px;
+    padding: 0 5px;
     border: 1px solid purple;
     background-color: white;
     display: flex;
     justify-content: center;
     align-items: center;
     overflow-x: hidden;
-    cursor: pointer;
+
 
 }
+
+/* .done_work {
+    background-color: rgba(25, 252, 0, 0.56);
+    color: rgb(0, 72, 0);
+} */
 
 .work_txt p {
     word-break: break-word;
     overflow-wrap: break-word;
     white-space: normal;
+    user-select: text;
+}
+
+.work_txt p::selection {
+    background-color: rgba(247, 0, 247, 0.442);
+}
+
+.task_status_done {
+    width: 90%;
+    height: 20px;
+    border: 1px solid green;
+    border-radius: 5px;
+    margin: 10px auto;
+    background-color: rgba(0, 255, 0, 0.519);
+    color: rgb(0, 78, 0);
+    display: flex;
+    justify-content: center;
+
+}
+
+.task_status_not_done {
+    width: 90%;
+    height: 20px;
+    border: 1px solid red;
+    border-radius: 5px;
+    margin: 10px auto;
+    background-color: rgba(255, 0, 0, 0.519);
+    color: rgb(78, 0, 0);
+    display: flex;
+    justify-content: center;
 }
 
 .buttons {
@@ -364,10 +411,13 @@ body {
     transition: background-color 300ms;
 
 }
+
 .delete:hover {
     background-color: rgba(255, 0, 0, 0.5);
 }
-.task_number{
+
+.task_number {
+    direction: ltr;
     width: 100%;
     height: 20px;
     background-color: rgba(42, 178, 32, 0.5);

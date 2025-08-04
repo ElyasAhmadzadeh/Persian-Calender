@@ -63,32 +63,51 @@ app.post("/api/tasks/:year/:month/:day", (req, res) => {
     return res.status(400).json({ error: "Invalid date" });
   }
 
-
-  app.delete("/api/tasks/:year/:month/:day/:taskIndex", (req, res) => {
+app.put("/api/tasks/:year/:month/:day/:taskIndex", (req, res) => {
   const { year, month, day, taskIndex } = req.params;
+  const { done } = req.body;
 
   const yearIndex = year - 1400;
   const monthIndex = month - 1;
   const dayIndex = day - 1;
+  const taskIdx = parseInt(taskIndex);
 
   const dayObj = calendar[yearIndex]?.[monthIndex]?.[dayIndex];
-  if (!dayObj) {
-    return res.status(400).json({ error: "Invalid date" });
+
+  if (!dayObj || isNaN(taskIdx) || taskIdx >= dayObj.tasks.length) {
+    return res.status(400).json({ error: "Invalid task" });
   }
 
-  const index = parseInt(taskIndex, 10);
-  if (isNaN(index) || index < 0 || index >= dayObj.tasks.length) {
-    return res.status(400).json({ error: "Invalid task index" });
-  }
-
-  // حذف تسک
-  dayObj.tasks.splice(index, 1);
-
-  res.status(200).json({
-    message: "Task deleted successfully",
-    day: dayObj
-  });
+  dayObj.tasks[taskIdx].done = !!done;
+  res.json({ message: "Task updated", task: dayObj.tasks[taskIdx] });
 });
+
+
+  app.delete("/api/tasks/:year/:month/:day/:taskIndex", (req, res) => {
+    const { year, month, day, taskIndex } = req.params;
+
+    const yearIndex = year - 1400;
+    const monthIndex = month;
+    const dayIndex = day - 1;
+
+    const dayObj = calendar[yearIndex]?.[monthIndex]?.[dayIndex];
+    if (!dayObj) {
+      return res.status(400).json({ error: "Invalid date" });
+    }
+
+    const index = parseInt(taskIndex, 10);
+    if (isNaN(index) || index < 0 || index >= dayObj.tasks.length) {
+      return res.status(400).json({ error: "Invalid task index" });
+    }
+
+    // حذف تسک
+    dayObj.tasks.splice(index, 1);
+
+    res.status(200).json({
+      message: "Task deleted successfully",
+      day: dayObj
+    });
+  });
 
 
   // اطمینان حاصل می‌کنیم که task یک رشته هست
