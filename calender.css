@@ -523,6 +523,15 @@ body {
     .calender {
         height: 600px;
     }
+    .days_in_month_table{
+        height: 400px;
+    }
+    .day{
+        margin:10px 20px;
+    }
+    .week{
+        margin: 7px auto;
+    }
 }
 
 @media screen and (max-width: 515px) {
