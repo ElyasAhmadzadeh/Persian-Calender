@@ -1,10 +1,3 @@
-// // const { log } = require("console");
-
-// const { DatabaseSync } = require("node:sqlite");
-
-
-
-
 
 
 //global variables
@@ -23,7 +16,10 @@ const list = document.querySelector(".works_list");
 const getURL = `http://localhost:3000/api/calendar/`;
 const delete_btn = document.querySelectorAll(".delete");
 const worksInDay = document.querySelectorAll(".works_count");
-
+const table = document.querySelector(".days_in_month_table");
+const day_show = document.querySelector(".day_show");
+const month_show = document.querySelector(".month_show");
+const year_show = document.querySelector(".year_show");
 
 const month_box = document.querySelector(".months");
 const selected_month = document.querySelector(".month");
@@ -36,8 +32,20 @@ selected_month.textContent = months[0];
 
 
 
-calenderUpdate();
+calenderUpdate();//updating the calender when the page was load
 
+
+function dateObject() {//return an object for selected date
+    const month = document.querySelector(".month").textContent;
+    const monthNumber = monthToNumber(month);
+    const year = +document.querySelector(".year").textContent;
+
+    return {
+        month: month,
+        month_number: monthNumber,
+        year: year
+    }
+}
 
 function nextMonth() {//for changing the current month to next month
     if (months_counter >= 0 && months_counter < 11) {
@@ -53,7 +61,8 @@ function nextMonth() {//for changing the current month to next month
         }
         months_counter = 0;
         selected_month.textContent = months[months_counter];
-    }
+    }//update the page informations
+    dateShow();
     calenderUpdate();
 }
 function perviouseMonth() {//changing month to perviouse month
@@ -70,7 +79,8 @@ function perviouseMonth() {//changing month to perviouse month
         }
         months_counter = 11;
         selected_month.textContent = months[months_counter];
-    }
+    }//update the page informations
+    dateShow();
     calenderUpdate();
 }
 function nextYear() {//change year to next year
@@ -81,7 +91,8 @@ function nextYear() {//change year to next year
     }
     else {
         throw 404;
-    }
+    }//update the page informations
+    dateShow();
     calenderUpdate();
 }
 function previouseYear() {//change year to pervoiuse year
@@ -92,7 +103,8 @@ function previouseYear() {//change year to pervoiuse year
     }
     else {
         throw 404;
-    }
+    }//update the page informations
+    dateShow();
     calenderUpdate();
 }
 
@@ -109,7 +121,7 @@ function textAreaReset() {
 
 
 }
-const textAreaHandler = () => {
+const textAreaHandler = () => {//check the input characters in textarea
     let txtCharacters = 150;
     const typedCharacters = textarea.value.length;
     const overallCharacters = txtCharacters - typedCharacters;
@@ -129,7 +141,7 @@ const textAreaHandler = () => {
 }
 
 
-function monthToNumber(month) {
+function monthToNumber(month) {//turn the month name into month number in array
     for (let i = 0; i < months.length; i++) {
         if (months[i] == month) {
             return i;
@@ -139,7 +151,7 @@ function monthToNumber(month) {
 
 
 
-function calenderUpdate() {
+function calenderUpdate() {//get the calender information from server and put it on page
     fetch(getURL)
         .then(res => {
             return res.json()
@@ -148,16 +160,14 @@ function calenderUpdate() {
             data => {
                 console.log(data);
 
-                const month = document.querySelector(".month").textContent;
-                const year = document.querySelector(".year").textContent;
-                const yearNumber = +year;
-                let monthNumber = monthToNumber(month);
+                const date = dateObject();
 
-                const daysInMonth = data[yearNumber - 1400][monthNumber];
+                const daysInMonth = data[date.year - 1400][date.month_number];
 
 
                 for (let i = 0; i < day.length; i++) {
                     day[i].textContent = "";
+                    worksInDay[i].textContent = "";
                 }
 
 
@@ -167,8 +177,10 @@ function calenderUpdate() {
                     for (let j = newj; j < day.length; j++) {
                         if (day[j].classList.contains(daysInMonth[i].dayName) && day[j].textContent == "") {
                             day[j].textContent = daysInMonth[i].day;
-                            if (day[j].textContent != "")
-                                worksInDay[j].textContent = daysInMonth[i].tasks.length
+                            // if (day[j].textContent != "") {
+                            worksInDay[j].textContent = daysInMonth[i].tasks.length;
+                            console.log(daysInMonth[i].tasks.length);
+                            // }
                             newj = j;
                             break;
                         }
@@ -181,18 +193,18 @@ function calenderUpdate() {
 
 
 
-function postToServer(event) {
+function postToServer(event) {//post informtions to server
     event.preventDefault();
     const task = textarea.value;
-    const month = document.querySelector(".month").textContent;
-    const monthNumber = monthToNumber(month);
-    const year = +document.querySelector(".year").textContent;
-    if (selectedDay == null) {
+
+    const date = dateObject();
+
+    if (selectedDay == null || selectedDay == "") {
         alert("please select a day");
         return;
     }
 
-    fetch(`http://localhost:3000/api/tasks/${year}/${monthNumber + 1}/${selectedDay}`, {
+    fetch(`http://localhost:3000/api/tasks/${date.year}/${date.month_number + 1}/${selectedDay}`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -204,6 +216,7 @@ function postToServer(event) {
                 console.log("put method success");
                 textarea.value = "";
                 makeList();
+                calenderUpdate();
             }
             else {
                 console.log("put method failed");
@@ -215,6 +228,7 @@ function postToServer(event) {
             console.log(err);
         });
     characterCounter.textContent = 150;
+    calenderUpdate();
 }
 
 function makeList() {
@@ -226,9 +240,7 @@ function makeList() {
     )
 
 
-    const month = document.querySelector(".month").textContent;
-    const monthNumber = monthToNumber(month);
-    const year = +document.querySelector(".year").textContent;
+    const date = dateObject();
     let tasks = [];
     let tasks_txt = [];
     fetch(getURL)
@@ -248,7 +260,7 @@ function makeList() {
             data => {
                 console.log(data);
 
-                tasks = data[year - 1400][monthNumber][selectedDay - 1].tasks;
+                tasks = data[date.year - 1400][date.month_number][selectedDay - 1].tasks;
                 let task_counter = 0;
                 tasks.forEach(
                     todayTask => {
@@ -308,40 +320,47 @@ function makeList() {
 
 }
 
-
+function dateShow() {
+    const date = dateObject();
+    day_show.textContent = selectedDay;
+    month_show.textContent = date.month_number + 1;
+    year_show.textContent = date.year - 1400;
+}
 
 function sellSelected(event) {
 
+    const clickedEL = event.target;
+    if (clickedEL.classList.contains("day_number")) {
+        selectedDay = clickedEL.textContent;
+    }
+    else if (clickedEL.classList.contains("works_count")) {
+        const selected_sell = clickedEL.closest(".day");
+        selectedDay = selected_sell.querySelector(".day_number").textContent;
+    }
+
+    dateShow();
 
     day_sells.forEach(
         element => {
             element.classList.remove("selected_day_animation");
         }
     )
-    const selected = event.target;
-    selectedDay = selected.closest(".day_number").textContent;
-
-
-    selected.closest(".day").classList.add("selected_day_animation");
+    clickedEL.closest(".day").classList.add("selected_day_animation");
     dayContainer.classList.add("selected-day-loading");
     makeList();
-
-
 
 }
 
 function deleteThisTask(event) {
     const clickedEl = event.target;
-    const month = document.querySelector(".month").textContent;
-    const monthNumber = monthToNumber(month);
-    const year = +document.querySelector(".year").textContent;
+    const date = dateObject();
 
 
     if (clickedEl.classList.contains("delete") || clickedEl.classList.contains("fa-trash")) {
         const work_card = clickedEl.closest(".work");
         const task_number = +work_card.querySelector(".task_counter").textContent;
 
-        fetch(`http://localhost:3000/api/tasks/${year}/${monthNumber}/${selectedDay}/${task_number - 1}`,
+        fetch(`http://localhost:3000/api/tasks/${date.year}/${date.month_number}/${selectedDay}/${task_number - 1}`,
             {
                 method: "DELETE"
             }
@@ -370,9 +389,7 @@ function deleteThisTask(event) {
 }
 function workDoneCheck(event) {
     const clickedEl = event.target;
-    const month = document.querySelector(".month").textContent;
-    const monthNumber = monthToNumber(month);
-    const year = +document.querySelector(".year").textContent;
+    const date = dateObject();
 
 
     if (clickedEl.classList.contains("done") || clickedEl.classList.contains("fa-check")) {
@@ -380,7 +397,7 @@ function workDoneCheck(event) {
         const work_number = +work_card.querySelector(".task_counter").textContent;
 
 
-        fetch(`http://localhost:3000/api/tasks/${year}/${monthNumber + 1}/${selectedDay}/${work_number - 1}`, {
+        fetch(`http://localhost:3000/api/tasks/${date.year}/${date.month_number + 1}/${selectedDay}/${work_number - 1}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
@@ -425,17 +442,11 @@ function keypressFormHandler(event) {
 }
 
 
-//events
-day_sells.forEach(
-    element => {
-        element.addEventListener("click", sellSelected)
-    }
-)
+table.addEventListener("click", sellSelected);
 list.addEventListener("click", workDoneCheck);
 list.addEventListener("click", deleteThisTask);
 form.addEventListener("keydown", keypressFormHandler);
 form.addEventListener("submit", postToServer);
-// form.addEventListener("submit", makeList);
 previouse_month_btn.addEventListener("click", perviouseMonth);
 next_month_btn.addEventListener("click", nextMonth);
 next_year_btn.addEventListener("click", nextYear);
