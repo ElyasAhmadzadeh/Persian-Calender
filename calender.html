@@ -27,20 +27,31 @@
         <section class="calender">
             <!-- selecting year and month of a date in header -->
             <section class="month_year_selection">
-                <div class="year_selection">
-                    <button class="prevoius_year"><i class="fa fa-angle-left" aria-hidden="true"></i></button>
-                    <div class="years">
-                        <div class="year">1404</div>
+                <div class="date_selection">
+                    <div class="year_selection">
+                        <button class="prevoius_year"><i class="fa fa-angle-left" aria-hidden="true"></i></button>
+                        <div class="years">
+                            <div class="year">1404</div>
+                        </div>
+                        <button class="next_year"><i class="fa fa-angle-right" aria-hidden="true"></i></button>
                     </div>
-                    <button class="next_year"><i class="fa fa-angle-right" aria-hidden="true"></i></button>
-                </div>
-                <div class="month_selection">
-                    <button class="prevoius_month"><i class="fa fa-angle-left" aria-hidden="true"></i></button>
-                    <div class="months">
-                        <div class="month"></div>
+                    <div class="month_selection">
+                        <button class="prevoius_month"><i class="fa fa-angle-left" aria-hidden="true"></i></button>
+                        <div class="months">
+                            <div class="month"></div>
+                        </div>
+                        <button class="next_month"><i class="fa fa-angle-right" aria-hidden="true"></i></button>
                     </div>
-                    <button class="next_month"><i class="fa fa-angle-right" aria-hidden="true"></i></button>
                 </div>
+                <div class="date_display">
+                    <span class="day_show"></span>
+                    /
+                    <span class="month_show"></span>
+                    /
+                    <span class="year_show"></span>
+
+                </div>
+
             </section>
             <!-- days in a selected month -->
             <section class="days_in_month_table">
@@ -80,8 +91,7 @@
                     <div class="day">
                         <span class="day_number Wednesday">
                         </span>
-                        <span class="works_count"></span>ّ
-
+                        <span class="works_count"></span>
                     </div>
                     <div class="day">
                         <span class="day_number Thursday">
@@ -123,8 +133,7 @@
                     <div class="day">
                         <span class="day_number Wednesday">
                         </span>
-                        <span class="works_count"></span>ّ
-
+                        <span class="works_count"></span>
                     </div>
                     <div class="day">
                         <span class="day_number Thursday">
@@ -166,7 +175,7 @@
                     <div class="day">
                         <span class="day_number Wednesday">
                         </span>
-                        <span class="works_count"></span>ّ
+                        <span class="works_count"></span>
                     </div>
                     <div class="day">
                         <span class="day_number Thursday">
@@ -208,8 +217,7 @@
                     <div class="day">
                         <span class="day_number Wednesday">
                         </span>
-                        <span class="works_count"></span>ّ
-
+                        <span class="works_count"></span>
                     </div>
                     <div class="day">
                         <span class="day_number Thursday">
@@ -251,8 +259,7 @@
                     <div class="day">
                         <span class="day_number Wednesday">
                         </span>
-                        <span class="works_count"></span>ّ
-
+                        <span class="works_count"></span>
                     </div>
                     <div class="day">
                         <span class="day_number Thursday">
@@ -274,10 +281,10 @@
         <section class="selected-day">
             <!-- getting the works and validation from user -->
             <form action="#" class="work_user_input">
-                <textarea name="" minlength="10" maxlength="150" class="user_input_textarea" cols="10" rows="10"
+                <textarea name="" minlength="10" maxlength="150" class="user_input_textarea" cols="15" rows="15"
                     id="input"></textarea>
-                <span class="textarea_guide">Enter your today's tasks here and click submit <i class="fa fa-pencil"
-                        aria-hidden="true"></i></span>
+                <label class="textarea_guide" for="input">Enter your today's tasks here and click submit <i
+                        class="fa fa-pencil" aria-hidden="true"></i></label>
                 <span class="character_count">150</span>
                 <button type="submit" class="submit_work_btn">SUBMIT</button>
             </form>
