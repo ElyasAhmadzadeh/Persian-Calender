@@ -231,7 +231,7 @@ function postToServer(event) {//post informtions to server
     calenderUpdate();
 }
 
-function makeList() {
+function makeList() {//displaying today's works
     const last_list_itmes = document.querySelectorAll(".work");
     last_list_itmes.forEach(
         element => {
@@ -320,14 +320,14 @@ function makeList() {
 
 }
 
-function dateShow() {
+function dateShow() {//show selected day
     const date = dateObject();
     day_show.textContent = selectedDay;
     month_show.textContent = date.month_number + 1;
     year_show.textContent = date.year - 1400;
 }
 
-function sellSelected(event) {
+function sellSelected(event) {//when user selected a day cell in table
 
     const clickedEL = event.target;
     if (clickedEL.classList.contains("day_number")) {
@@ -340,7 +340,7 @@ function sellSelected(event) {
 
     dateShow();
 
-    day_sells.forEach(
+    day_sells.forEach(//removing styles from other cells
         element => {
             element.classList.remove("selected_day_animation");
         }
@@ -351,7 +351,7 @@ function sellSelected(event) {
 
 }
 
-function deleteThisTask(event) {
+function deleteThisTask(event) {//function for deleting the selected task from api and server and refresh the tasks list
     const clickedEl = event.target;
     const date = dateObject();
 
@@ -387,7 +387,7 @@ function deleteThisTask(event) {
     }
 
 }
-function workDoneCheck(event) {
+function workDoneCheck(event) {//function for done the selected task from api and server and refresh the tasks list
     const clickedEl = event.target;
     const date = dateObject();
 
@@ -429,7 +429,7 @@ function workDoneCheck(event) {
 
 
 
-function errorWorks() {
+function errorWorks() {//error function for when the api informations wasn't loading
     list.textContent = "خطای سرور";
     list.style.color = "red";
 }
@@ -441,7 +441,7 @@ function keypressFormHandler(event) {
 
 }
 
-
+//events
 table.addEventListener("click", sellSelected);
 list.addEventListener("click", workDoneCheck);
 list.addEventListener("click", deleteThisTask);
