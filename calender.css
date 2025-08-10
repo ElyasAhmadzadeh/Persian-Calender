@@ -1,3 +1,9 @@
+@font-face {
+    font-family: "Rubik";
+    src: url("Rubik-VariableFont_wght.ttf");
+}
+
+
 * {
     margin: 0;
     padding: 0;
@@ -307,8 +313,11 @@ body {
     font-size: 17px;
     padding: 7px;
     border-radius: 10px;
+    transition: background-color 200ms;
 }
-
+.submit_work_btn:hover{
+background-color: rgba(200 , 200 , 200 , .6);
+}
 
 .textarea_guide {
     color: rgba(255, 255, 255, 0.318);
@@ -560,3 +569,4 @@ body {
     }
 
 }
+
