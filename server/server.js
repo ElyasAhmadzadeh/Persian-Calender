@@ -133,26 +133,3 @@ app.listen(PORT, () => {
 });
 
 
-
-// app.post("/api/tasks/:year/:month/:day", (req, res) => {
-//   const { year, month, day } = req.params;
-//   const { task } = req.body;
-
-//   const yearIndex = year - 1400;
-//   const monthIndex = month - 1;
-//   const dayIndex = day - 1;
-
-//   if (
-//     !calendar[yearIndex] ||
-//     !calendar[yearIndex][monthIndex] ||
-//     !calendar[yearIndex][monthIndex][dayIndex]
-//   ) {
-//     return res.status(400).json({ error: "Invalid date" });
-//   }
-
-//   calendar[yearIndex][monthIndex][dayIndex].tasks.push(task);
-//   res.status(201).json({
-//     message: "Task added successfully",
-//     day: calendar[yearIndex][monthIndex][dayIndex]
-//   });
-// });

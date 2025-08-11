@@ -220,7 +220,6 @@ function postToServer(event) {//post informtions to server
             }
             else {
                 console.log("put method failed");
-
                 return;
             }
         })
