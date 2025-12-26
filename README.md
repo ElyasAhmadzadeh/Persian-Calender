@@ -1,11 +1,11 @@
 # Persian Calendar App - تقویم شمسی تعاملی با مدیریت وظایف
 
-![Preview](https://via.placeholder.com/1200x600.png?text=Persian+Calendar+App+Preview)  
+
 *(تصویر پیش‌نمایش: تقویم شمسی زیبا با قابلیت انتخاب روز و مدیریت وظایف روزانه)*
 
 یک اپلیکیشن وب کاملاً تعاملی و ریسپانسیو برای **تقویم شمسی** با قابلیت افزودن، ویرایش، تکمیل و حذف وظایف روزانه. این پروژه با API محلی (BackEnd جداگانه) ارتباط برقرار می‌کند , شامل دو بخش BackEnd , FrontEnd است.
 
-[پیش‌نمایش زنده](https://your-username.github.io/persian-calendar) *(به‌زودی)*
+[پیش‌نمایش زنده](https://elyasahmadzadeh.github.io/Persian-Calender/)
 
 ## ویژگی‌های کلیدی پروژه
 
